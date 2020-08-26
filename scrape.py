@@ -28,7 +28,7 @@ def cleanup(string):
     return string.split(':')[-1].strip()
 
 
-def scrape_details(browser, append_grader=False):
+def scrape_details(browser, append_grader=True):
 
     return_list = []
     if browser.is_element_present_by_xpath('/html/body/div/div/div[2]/div/div[2]/div/div[2]/div/div/div[1]/div/a[2]', wait_time=2):

@@ -28,7 +28,7 @@ def cleanup(string):
     return string.split(':')[-1].strip()
 
 
-def scrape_details(browser, end_append='grader'):
+def scrape_details(browser, append_grader=False):
 
     return_list = []
     if browser.is_element_present_by_xpath('/html/body/div/div/div[2]/div/div[2]/div/div[2]/div/div/div[1]/div/a[2]', wait_time=2):
@@ -65,17 +65,22 @@ def scrape_details(browser, end_append='grader'):
                     grade_dict['plagiarism'] = bool(browser.find_by_xpath(
                         '//*[@id="root"]/div/div[2]/div/div/div/div/div[4]/div/div[2]/div/input').checked)
 
-                    if end_append is not None:
-                        fill_text = grade_dict['comments']+'&#13;&#10;' * \
-                            2+f'--Graded By: {grade_dict["grader"]}'
+                    if append_grader:
+                        fill_text = grade_dict['comments'] + \
+                            f'\n\n--Graded By: {grade_dict["grader"]}'
                         browser.find_by_tag('textarea').fill(fill_text)
 
                     print(
                         f"{current_url.split('submission')[-1]} Stored", end='.......\r')
 
+                    ######################################
+                    #     Add additional conditions      #
+                    #        for Approval here           #
+                    ######################################
+
                     if grade_dict['grade'][0] == 'A' and not grade_dict['plagiarism']:
-                        # browser.find_by_xpath(
-                        #     '//*[@id="root"]/div/div[2]/div/div/div/div/div[4]/div/div[3]/button').click()
+                        browser.find_by_xpath(
+                            '//*[@id="root"]/div/div[2]/div/div/div/div/div[4]/div/div[3]/button').click()
                         print(f"Approved {grade_dict['student']}", end="\r")
                         grade_dict['approved'] = True
                     else:

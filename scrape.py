@@ -68,7 +68,8 @@ def scrape_details(browser, append_grader=True):
                     if append_grader:
                         fill_text = grade_dict['comments'] + \
                             f'\n\n--Graded By: {grade_dict["grader"]}'
-                        browser.find_by_tag('textarea').fill(fill_text)
+                        browser.find_by_tag('textarea').fill(
+                            fill_text)
 
                     print(
                         f"{current_url.split('submission')[-1]} Stored", end='.......\r')
